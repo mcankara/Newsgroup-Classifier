@@ -153,42 +153,6 @@ def predict():
     print("Accuracy: %{}".format(accuracy * 100))
 
 
-def computeMI():
-    sum_mi = 0.0
-    trainFeatures = readTrainFeatures()
-    trainLabels = readTrainLabels()
-
-    testFeatures = readTestFeatures()
-    testLabels = readTestLabels()
-
-    testLabels = np.unique(testLabels)
-
-    spaceWords = readTxt('./dataset/occur_space.txt')
-    medicalWords = readTxt('./dataset/occur_medical.txt')
-
-    n10 = 0
-    n11 = 0
-
-    for col in range(100):
-        for rowIndex, row in trainFeatures.iterrows():
-            if trainFeatures.iat[rowIndex, col] != 0 and trainLabels.iat[rowIndex, 0] == 0:
-                n10 += 1
-            if trainFeatures.iat[rowIndex, col] != 0 and trainLabels.iat[rowIndex, 0] == 1:
-                n11 += 1
-        n00 = 800 - n11
-        n01 = 800 - n10
-
-        sum1 = (n11 / (n00 + n01 + n10 + n11)) * ((math.log2(n00 + n01 + n10 + n11) * n11) - math.log2(((n11 + n10) * (n11 + n01))))
-        sum2 = (n01 / (n00 + n01 + n10 + n11)) * ((math.log2(n00 + n01 + n10 + n11) * n01) - math.log2(((n01 + n00) * (n11 + n01))))
-        sum3 = (n10 / (n00 + n01 + n10 + n11)) * ((math.log2(n00 + n01 + n10 + n11) * n11) - math.log2(((n11 + n10) * (n10 + n00))))
-        sum4 = (n00 / (n00 + n01 + n10 + n11)) * ((math.log2(n00 + n01 + n10 + n11) * n11) - math.log2(((n01 + n00) * (n10 + n00))))
-        totalSum = sum1 + sum2 + sum3 + sum4
-        print(totalSum)
-
-        n10 = 0
-        n11 = 0
-
-
 def main():
     calcEachWordOccurrence()
     calcEstimators()
